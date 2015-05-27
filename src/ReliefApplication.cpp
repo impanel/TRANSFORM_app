@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ReliefApplication::setup(){
-
+    //test
     //ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
