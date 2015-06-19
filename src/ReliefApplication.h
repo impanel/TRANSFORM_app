@@ -21,6 +21,7 @@
 #include "EscherShapeObject.h"
 #include "ImageShapeObject.h"
 #include "HandShapeObject.h"
+#include "TouchShapeObject.h"
 #include "ofxTimeline.h"
 #include "ofxUI.h"
 
@@ -81,6 +82,7 @@ public:
     ImageShapeObject            * mImageShapeObject;
     EscherShapeObject           * mEscherShapeObject;
     HandShapeObject             * mHandShapeObject;
+    TouchShapeObject            * mTouchShapeObject;
     
     ofxCvColorImage             cvColorImage;
     ofxCvColorImage             cvWarpedImage;
@@ -97,6 +99,8 @@ public:
        
     KinectVideoPlayer           kinectVideoPlayer;
     VideoRecorder               recorder;
+    
+    unsigned char pinHeightReceive[RELIEF_SIZE_X][RELIEF_SIZE_Y];
     
     unsigned char* compPixels;
     unsigned char* targetPixels;

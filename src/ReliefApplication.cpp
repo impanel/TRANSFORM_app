@@ -140,6 +140,9 @@ void ReliefApplication::initalizeShapeObjects() {
     mHandShapeObject->setImageWarper(mImageWarper);
     mHandShapeObject->setKinectTracker(&mKinectTracker);
     
+    mTouchShapeObject = new TouchShapeObject();
+    mTouchShapeObject->setPinHeight(pinHeightReceive);
+
     // push all shape objects to a buffer
     allShapeObjects.push_back(mWavyShapeObject);
     allShapeObjects.push_back(mFlockShapeObject);
@@ -150,6 +153,7 @@ void ReliefApplication::initalizeShapeObjects() {
     allShapeObjects.push_back(mImageShapeObject);
     allShapeObjects.push_back(mEscherShapeObject);
     allShapeObjects.push_back(mHandShapeObject);
+    allShapeObjects.push_back(mTouchShapeObject);
 }
 
 
@@ -481,6 +485,12 @@ int ReliefApplication::getIntValueForCurrentPage(string curveName) {
 
 //--------------------------------------------------------------
 void ReliefApplication::update(){
+    
+    for(int i = 0; i < RELIEF_SIZE_X; i++){
+        for(int j = 0; j < RELIEF_SIZE_Y; j++){
+            pinHeightReceive[i][j] =  mIOManager->pinHeightFromRelief[i][j];
+        }
+    }
     
     // prevent playing in manual mode
     if(!controlTimeline) timeline.stop();

@@ -124,6 +124,7 @@
 		A087E56D18D7B2D4009FAE6B /* ofxMovieExporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A087E55D18D7B2D4009FAE6B /* ofxMovieExporter.cpp */; };
 		A0AFE03A18DBD9F400C0D6C9 /* FadeLoopShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0AFE03818DBD9F400C0D6C9 /* FadeLoopShapeObject.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		BE478C7D1B30B46F005E90C7 /* TouchShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE478C7B1B30B46F005E90C7 /* TouchShapeObject.cpp */; };
 		D902971818DD1C7F00BEDF11 /* WavyShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D902971718DD1C7F00BEDF11 /* WavyShapeObject.cpp */; };
 		D902972118DD2B4E00BEDF11 /* Boid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D902971D18DD2B4E00BEDF11 /* Boid.cpp */; };
 		D902972218DD2B4E00BEDF11 /* FlockShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D902971F18DD2B4E00BEDF11 /* FlockShapeObject.cpp */; };
@@ -570,6 +571,8 @@
 		A0AFE03818DBD9F400C0D6C9 /* FadeLoopShapeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FadeLoopShapeObject.cpp; sourceTree = "<group>"; };
 		A0AFE03918DBD9F400C0D6C9 /* FadeLoopShapeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FadeLoopShapeObject.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		BE478C7B1B30B46F005E90C7 /* TouchShapeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchShapeObject.cpp; sourceTree = "<group>"; };
+		BE478C7C1B30B46F005E90C7 /* TouchShapeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchShapeObject.h; sourceTree = "<group>"; };
 		D902971618DD1C7F00BEDF11 /* WavyShapeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavyShapeObject.h; sourceTree = "<group>"; };
 		D902971718DD1C7F00BEDF11 /* WavyShapeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavyShapeObject.cpp; sourceTree = "<group>"; };
 		D902971D18DD2B4E00BEDF11 /* Boid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boid.cpp; sourceTree = "<group>"; };
@@ -1754,9 +1757,19 @@
 			name = "3rd party frameworks";
 			sourceTree = "<group>";
 		};
+		BE478C7A1B30B43F005E90C7 /* touch */ = {
+			isa = PBXGroup;
+			children = (
+				BE478C7B1B30B46F005E90C7 /* TouchShapeObject.cpp */,
+				BE478C7C1B30B46F005E90C7 /* TouchShapeObject.h */,
+			);
+			name = touch;
+			sourceTree = "<group>";
+		};
 		D902971A18DD256400BEDF11 /* ShapeObjects */ = {
 			isa = PBXGroup;
 			children = (
+				BE478C7A1B30B43F005E90C7 /* touch */,
 				44A96909196D9A6B00109D7E /* hand */,
 				4407796718F05F050029882C /* escher */,
 				44B4ABD918ECACF700D97631 /* image */,
@@ -2246,6 +2259,7 @@
 				8A1940E218DD336E00516528 /* ofxTLTrack.cpp in Sources */,
 				f4135eefc911e9ed211fb6f9 /* core.c in Sources */,
 				A087E56D18D7B2D4009FAE6B /* ofxMovieExporter.cpp in Sources */,
+				BE478C7D1B30B46F005E90C7 /* TouchShapeObject.cpp in Sources */,
 				D9F0A1CE18DCE608007E7E35 /* ofxEasingCubic.cpp in Sources */,
 				8ABAA62A18EFF18000009A66 /* ofxUIMinimalSlider.cpp in Sources */,
 				D9F0A1F418DCED2B007E7E35 /* tinyxmlparser.cpp in Sources */,
