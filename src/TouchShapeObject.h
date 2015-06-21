@@ -31,7 +31,8 @@ public:
     void setTableValuesForShape(ShapeIOManager *pIOManager);
     unsigned char* getPixels();
     
-    int differenceHeight[RELIEF_SIZE_X][RELIEF_SIZE_Y];
+    
+    
     
     string get_shape_name() {return shape_name; };
     string shape_name = "Touch";
@@ -43,6 +44,11 @@ private:
     ofxCvGrayscaleImage mOutputShapeImage, smallerImage;
     
     unsigned char* allPixels;
+    int differenceHeight[RELIEF_SIZE_X][RELIEF_SIZE_Y];
+    int filterFrame = 5;
+    unsigned char allPixels_store[RELIEF_SIZE][5];
+    
+    Boolean isTouched[RELIEF_SIZE_X][RELIEF_SIZE_Y];
 };
 
 
