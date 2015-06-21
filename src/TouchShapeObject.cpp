@@ -13,7 +13,7 @@ TouchShapeObject::TouchShapeObject()
 {
     mOutputShapeImage.allocate(RELIEF_PROJECTOR_SIZE_X, RELIEF_PROJECTOR_SIZE_Y);
     allPixels = new unsigned char[RELIEF_SIZE];
-};
+}
 
 void TouchShapeObject::setup()
 {
