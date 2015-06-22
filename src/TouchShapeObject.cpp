@@ -41,35 +41,8 @@ void TouchShapeObject::setup()
 void TouchShapeObject::update(float dt)
 {
     unsigned char * pixels;
-    
     int lineSize = sizeof(char) * RELIEF_SIZE_Y;
-    int x = RELIEF_SIZE_X / 2;
-    int y = RELIEF_SIZE_Y / 2;
-    unsigned char h = MAX(LOW_THRESHOLD,mPinHeightReceive[x * lineSize + y]);
     
-    int alX;
-    if (x<16) {
-        alX = PINBLOCK_0_X_OFFSET +x ;
-    } else if (x<32){
-        alX = PINBLOCK_1_X_OFFSET +x -16;
-    } else {
-        alX = PINBLOCK_2_X_OFFSET +x -32;
-    }
-    
-    
-    for (int i = 0; i < RELIEF_PHYSICAL_SIZE_X; i++) {
-        for(int j = 0; j < RELIEF_PHYSICAL_SIZE_Y; j++){
-
-            int d = ofDist(alX, y, i, j);
-            if(d>15){ d = 15; };
-                int dHeight = ofMap(d, 0, 15, (int)h, HIGH_THRESHOLD);
-            dHeight = MAX(LOW_THRESHOLD, dHeight);
-            allPixels[RELIEF_PHYSICAL_SIZE_X* j+ i] =  dHeight;
-        }
-    }
-    
-    
-    allPixels[RELIEF_PHYSICAL_SIZE_X*y+alX]=210;
     
     //store data
     for(int i = 0; i < RELIEF_SIZE; i++){
@@ -82,15 +55,8 @@ void TouchShapeObject::update(float dt)
     //check each pin's difference over time - if it's flat or not
     Boolean flat[RELIEF_SIZE_X][RELIEF_SIZE_Y];
     for(int i = 0; i< RELIEF_SIZE_X; i++){
-        int alX = i;
-        if (i<16) {
-            alX = PINBLOCK_0_X_OFFSET +i ;
-        } else if (i<32){
-            alX = PINBLOCK_1_X_OFFSET +i -16;
-        } else {
-            alX = PINBLOCK_2_X_OFFSET +i -32;
-        }
-        
+        int alX =  allocateX(i);
+
         for(int j = 0; j< RELIEF_SIZE_Y; j++){
             
             int maxVal=0, minVal=255;
@@ -106,22 +72,15 @@ void TouchShapeObject::update(float dt)
             
         }
     }
-    
-    
+
     
     
     // caliculate difference between send and receive value
     
     for(int i = 0; i< RELIEF_SIZE_X; i++){
         for(int j = 0; j< RELIEF_SIZE_Y; j++){
-            int alX = i;
-            if (i<16) {
-                alX = PINBLOCK_0_X_OFFSET +i ;
-            } else if (i<32){
-                alX = PINBLOCK_1_X_OFFSET +i -16;
-            } else {
-                alX = PINBLOCK_2_X_OFFSET +i -32;
-            }
+            int alX =  allocateX(i);;
+
             int output = int(allPixels[RELIEF_PHYSICAL_SIZE_X*j+alX]);
             int input = int(mPinHeightReceive[i * lineSize + j]);
             
@@ -147,6 +106,72 @@ void TouchShapeObject::update(float dt)
             }
         }
     }
+    
+    //*** MODE: Every Pin Input ***//
+    
+    for(int i = 0; i< RELIEF_SIZE_X; i++){
+        for(int j = 0; j< RELIEF_SIZE_Y; j++){
+                allPixels[RELIEF_PHYSICAL_SIZE_X* j+ allocateX(i)] = HIGH_THRESHOLD;
+            
+        }
+    }
+    
+    
+    int rangeDef = 10; //range of deformation
+    for(int i = 0; i< RELIEF_SIZE_X; i++){
+        for(int j = 0; j< RELIEF_SIZE_Y; j++){
+            if (isTouched[i][j]) {
+                unsigned char h = MAX(LOW_THRESHOLD,mPinHeightReceive[i * lineSize + j]);
+                for (int ii = MAX(0,i - rangeDef); ii< MIN(RELIEF_SIZE_X,i+rangeDef); ii++) {
+                    for (int jj = MAX(0,j - rangeDef); jj< MIN(RELIEF_SIZE_Y,j+rangeDef); jj++) {
+                    int d = ofDist(i, j, ii, jj);
+                    if(d>rangeDef){ d = rangeDef; };
+                    int dHeight = ofMap(d, 0, rangeDef, (int)h, HIGH_THRESHOLD);
+                    dHeight = MAX(LOW_THRESHOLD, dHeight);
+                    allPixels[RELIEF_PHYSICAL_SIZE_X* jj+ allocateX(ii)] =  MIN(allPixels[RELIEF_PHYSICAL_SIZE_X* jj+ allocateX(ii)],dHeight);
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    for(int i = 0; i< RELIEF_SIZE_X; i++){
+        for(int j = 0; j< RELIEF_SIZE_Y; j++){
+            if (isTouched[i][j]) {
+                unsigned char h = MAX(LOW_THRESHOLD,mPinHeightReceive[i * lineSize + j]);
+                h = MIN((int)h+35,HIGH_THRESHOLD);
+                allPixels[RELIEF_PHYSICAL_SIZE_X* j+ allocateX(i)] = HIGH_THRESHOLD; //(int)h;
+                for(int k = 0; k < filterFrame; k++){
+                    allPixels_store[RELIEF_PHYSICAL_SIZE_X* j+ allocateX(i)][k] = HIGH_THRESHOLD; //(int)h;
+                }
+            }
+        }
+    }
+    
+    
+    
+    //*** MODE: One Center Pin Input ***//
+//    int x = RELIEF_SIZE_X / 2;
+//    int y = RELIEF_SIZE_Y / 2;
+//    unsigned char h = MAX(LOW_THRESHOLD,mPinHeightReceive[x * lineSize + y]);
+//    
+//    int alX = allocateX(x);
+//    
+//    for (int i = 0; i < RELIEF_PHYSICAL_SIZE_X; i++) {
+//        for(int j = 0; j < RELIEF_PHYSICAL_SIZE_Y; j++){
+//            
+//            int d = ofDist(alX, y, i, j);
+//            if(d>15){ d = 15; };
+//            int dHeight = ofMap(d, 0, 15, (int)h, HIGH_THRESHOLD);
+//            dHeight = MAX(LOW_THRESHOLD, dHeight);
+//            allPixels[RELIEF_PHYSICAL_SIZE_X* j+ i] =  dHeight;
+//        }
+//    }
+//    
+//    allPixels[RELIEF_PHYSICAL_SIZE_X*y+alX]=HIGH_THRESHOLD;
+    
+    
     
 }
 
@@ -178,14 +203,7 @@ void TouchShapeObject::drawGuiScreen(int x, int y, int w, int h)
             ofTranslate(5, 0);
         }
         
-        int alX = i;
-        if (i<16) {
-            alX =  PINBLOCK_0_X_OFFSET +i ;
-        } else if (i<32){
-            alX = PINBLOCK_1_X_OFFSET +i -16 ;
-        } else {
-            alX = PINBLOCK_2_X_OFFSET +i  -32;
-        }
+        int alX = allocateX(i);
         
         for(int j = 0; j< RELIEF_SIZE_Y; j++){
             int val = differenceHeight[i][j];
@@ -243,7 +261,21 @@ void TouchShapeObject::setTableValuesForShape(ShapeIOManager *pIOManager)
 
 //----------------------------------------------------
 
+
+
 unsigned char* TouchShapeObject::getPixels()
 {
     return allPixels;
+}
+
+int TouchShapeObject::allocateX (int num){
+    int val = num;
+    if (num<16) {
+        val =  PINBLOCK_0_X_OFFSET +num ;
+    } else if (num<32){
+        val = PINBLOCK_1_X_OFFSET +num -16 ;
+    } else {
+        val = PINBLOCK_2_X_OFFSET +num  -32;
+    }
+    return val;
 }

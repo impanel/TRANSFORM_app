@@ -31,6 +31,7 @@ public:
     void setTableValuesForShape(ShapeIOManager *pIOManager);
     unsigned char* getPixels();
     
+    int allocateX(int num);
     
     
     
@@ -45,8 +46,9 @@ private:
     
     unsigned char* allPixels;
     int differenceHeight[RELIEF_SIZE_X][RELIEF_SIZE_Y];
-    int filterFrame = 5;
-    unsigned char allPixels_store[RELIEF_SIZE][5];
+    int filterFrame = 6;
+    
+    unsigned char allPixels_store[RELIEF_SIZE][6];
     
     Boolean isTouched[RELIEF_SIZE_X][RELIEF_SIZE_Y];
 };
