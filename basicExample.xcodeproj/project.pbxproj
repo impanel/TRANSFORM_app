@@ -16,6 +16,7 @@
 		44B4ABDC18ECAD0C00D97631 /* ImageShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44B4ABDA18ECAD0C00D97631 /* ImageShapeObject.cpp */; };
 		49beeb2dfa5319d55aa6899f /* tilt.c in Sources */ = {isa = PBXBuildFile; fileRef = bf2f2aa872288d30f53983ef /* tilt.c */; };
 		63020f16c7e8ded980111241 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c6151136d101f857dae12722 /* ofxCvImage.cpp */; };
+		6572FC8B1B38FBDF001BBF38 /* MoldShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6572FC891B38FBDF001BBF38 /* MoldShapeObject.cpp */; };
 		686b0df6249b52e1a85b39ec /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ed9ffc7d08da194c2ce7d09 /* ofxKinect.cpp */; };
 		8A193EAA18DBB20F00516528 /* baseVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A193EA818DBB20F00516528 /* baseVideoPlayer.cpp */; };
 		8A193ED318DBCE8F00516528 /* ImageWarper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A193ECC18DBCE8F00516528 /* ImageWarper.cpp */; };
@@ -246,6 +247,8 @@
 		60179a75a6c5f9a54da3a64c /* streams.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = streams.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/streams.hpp; sourceTree = SOURCE_ROOT; };
 		603f2267d449084a4187a049 /* ofxCvBlob.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxCvBlob.h; path = ../../../addons/ofxOpenCv/src/ofxCvBlob.h; sourceTree = SOURCE_ROOT; };
 		61339778c58d921474b5729e /* features2d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = features2d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/features2d/features2d.hpp; sourceTree = SOURCE_ROOT; };
+		6572FC891B38FBDF001BBF38 /* MoldShapeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoldShapeObject.cpp; sourceTree = "<group>"; };
+		6572FC8A1B38FBDF001BBF38 /* MoldShapeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoldShapeObject.h; sourceTree = "<group>"; };
 		665780a3005496e3a4a0d9ef /* compat.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = compat.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/compat.hpp; sourceTree = SOURCE_ROOT; };
 		67af0e794fa186dd25454cc9 /* calib3d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = calib3d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d/calib3d.hpp; sourceTree = SOURCE_ROOT; };
 		6b907cfbb1b0fede76c41aa0 /* heap.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = heap.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/heap.h; sourceTree = SOURCE_ROOT; };
@@ -932,6 +935,15 @@
 				1ae6862ed862ca18468e0ccd /* include */,
 			);
 			name = "libusb-1.0";
+			sourceTree = "<group>";
+		};
+		6572FC8C1B38FCAD001BBF38 /* mold */ = {
+			isa = PBXGroup;
+			children = (
+				6572FC891B38FBDF001BBF38 /* MoldShapeObject.cpp */,
+				6572FC8A1B38FBDF001BBF38 /* MoldShapeObject.h */,
+			);
+			name = mold;
 			sourceTree = "<group>";
 		};
 		6dfa2b327764fcda2a8d882f /* include */ = {
@@ -1769,6 +1781,7 @@
 		D902971A18DD256400BEDF11 /* ShapeObjects */ = {
 			isa = PBXGroup;
 			children = (
+				6572FC8C1B38FCAD001BBF38 /* mold */,
 				BE478C7A1B30B43F005E90C7 /* touch */,
 				44A96909196D9A6B00109D7E /* hand */,
 				4407796718F05F050029882C /* escher */,
@@ -2321,6 +2334,7 @@
 				ace7dc9a3223ed5ee1b80074 /* cameras.c in Sources */,
 				8A1940D918DD336E00516528 /* ofxTLImageSequenceFrame.cpp in Sources */,
 				8ABAA61D18EFF18000009A66 /* ofxUIDragableLabelButton.cpp in Sources */,
+				6572FC8B1B38FBDF001BBF38 /* MoldShapeObject.cpp in Sources */,
 				8A193EEF18DBEC7100516528 /* MachineAnimationShapeObject.cpp in Sources */,
 				D9F0A1D318DCE608007E7E35 /* ofxEasingQuart.cpp in Sources */,
 				8A40C5D518B0716700911A7A /* ShapeIOManager.cpp in Sources */,

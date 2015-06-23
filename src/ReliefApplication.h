@@ -22,6 +22,7 @@
 #include "ImageShapeObject.h"
 #include "HandShapeObject.h"
 #include "TouchShapeObject.h"
+#include "MoldShapeObject.h"
 #include "ofxTimeline.h"
 #include "ofxUI.h"
 
@@ -83,6 +84,7 @@ public:
     EscherShapeObject           * mEscherShapeObject;
     HandShapeObject             * mHandShapeObject;
     TouchShapeObject            * mTouchShapeObject;
+    MoldShapeObject            * mMoldShapeObject;
     
     ofxCvColorImage             cvColorImage;
     ofxCvColorImage             cvWarpedImage;

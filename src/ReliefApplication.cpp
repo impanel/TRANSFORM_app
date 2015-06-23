@@ -142,6 +142,9 @@ void ReliefApplication::initalizeShapeObjects() {
     
     mTouchShapeObject = new TouchShapeObject();
     mTouchShapeObject->setPinHeight(pinHeightReceive);
+    
+    mMoldShapeObject = new MoldShapeObject();
+    mMoldShapeObject->setPinHeight(pinHeightReceive);
 
     // push all shape objects to a buffer
     allShapeObjects.push_back(mWavyShapeObject);
@@ -154,6 +157,7 @@ void ReliefApplication::initalizeShapeObjects() {
     allShapeObjects.push_back(mEscherShapeObject);
     allShapeObjects.push_back(mHandShapeObject);
     allShapeObjects.push_back(mTouchShapeObject);
+    allShapeObjects.push_back(mMoldShapeObject);
 }
 
 
