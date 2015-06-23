@@ -12,30 +12,12 @@
 #include <iostream>
 #include "ShapeObject.h"
 #include "Constants.h"
+#include "MoldedShape.h"
 #include "ShapeIOManager.h"
 #include "ofxOpenCv.h"
 
     
 #define NUM_FILTER_FRAME 6
-#define MOLDED_SHAPE_DIM 16
-
-class MoldedShape {
-public:
-    MoldedShape(int id, int _heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM]) : id(id) {
-        for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
-            for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
-                heightMap[i][j] = _heightMap[i][j];
-            }
-        }
-    };
-    int getId() {return id;};
-    int x = 0;
-    int y = 0;
-    int heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
-
-private:
-    int id;
-};
 
 class MoldShapeObject : public ShapeObject {
 
