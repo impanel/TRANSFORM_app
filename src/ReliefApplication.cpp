@@ -793,6 +793,11 @@ void ReliefApplication::drawGeneralMessage() {
 //--------------------------------------------------------------
 void ReliefApplication::keyPressed(int key){
 	switch(key) {
+        case 'a':
+            if (mMoldShapeObject == mCurrentShapeObjects[0]) {
+                mMoldShapeObject->isRecording = true;
+            }
+            break;
 		case 'r':
         case 'R':
 			if (movieExporter.isRecording()) {

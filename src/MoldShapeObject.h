@@ -15,12 +15,33 @@
 #include "ShapeIOManager.h"
 #include "ofxOpenCv.h"
 
-class MoldShapeObject : public ShapeObject {
     
 #define NUM_FILTER_FRAME 6
-    
+#define MOLDED_SHAPE_DIM 16
+
+class MoldedShape {
+public:
+    MoldedShape(int id, int _heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM]) : id(id) {
+        for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
+            for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
+                heightMap[i][j] = _heightMap[i][j];
+            }
+        }
+    };
+    int getId() {return id;};
+    int x = 0;
+    int y = 0;
+    int heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
+
+private:
+    int id;
+};
+
+class MoldShapeObject : public ShapeObject {
+
 public:
     MoldShapeObject();
+    ~MoldShapeObject();
     void setup();
     void update(float dt);
     void renderShape();
@@ -35,7 +56,8 @@ public:
     
     int xCoordinateShift(int num);
     
-    
+
+    Boolean isRecording = false;
     
     string get_shape_name() {return shape_name; };
     string shape_name = "Mold";
@@ -53,6 +75,11 @@ private:
     unsigned char allPixels_store[RELIEF_SIZE][NUM_FILTER_FRAME];
     
     Boolean isTouched[RELIEF_SIZE_X][RELIEF_SIZE_Y];
+    int holdsObject[RELIEF_SIZE_X][RELIEF_SIZE_Y];
+
+    vector<MoldedShape *> moldedShapes;
+    int nextObjectId = 0;
+    int getUID() {return nextObjectId++;}
 };
 
 

@@ -31,6 +31,10 @@ MoldShapeObject::MoldShapeObject()
     
 }
 
+MoldShapeObject::~MoldShapeObject() {
+    moldedShapes.erase(moldedShapes.begin());
+}
+
 void MoldShapeObject::setup()
 {
     
@@ -89,13 +93,20 @@ void MoldShapeObject::update(float dt)
             
         }
     }
-    
+
+    Boolean someoneIsTouched = false;
+    int minXTouched = RELIEF_SIZE_X;
+    int minYTouched = RELIEF_SIZE_Y;
+
     // determine if each pin were touched or not
     for(int i = 0; i< RELIEF_SIZE_X; i++){
         for(int j = 0; j< RELIEF_SIZE_Y; j++){
             if(flat[i][j]){
                 if (abs(differenceHeight[i][j]) > 21) {
                     isTouched[i][j] = true;
+                    someoneIsTouched = true;
+                    minXTouched = min(minXTouched, i);
+                    minYTouched = min(minYTouched, j);
                 } else {
                     isTouched[i][j] = false;
                 }
@@ -107,16 +118,71 @@ void MoldShapeObject::update(float dt)
         }
     }
     
-    //*** MODE: Every Pin Input ***//
-    
+    // determine what object resides in each pin
     for(int i = 0; i< RELIEF_SIZE_X; i++){
         for(int j = 0; j< RELIEF_SIZE_Y; j++){
-                allPixels[RELIEF_PHYSICAL_SIZE_X* j+ xCoordinateShift(i)] = HIGH_THRESHOLD;
+            // initialize all values to -1
+            holdsObject[i][j] = -1;
+        }
+    }
 
+    if (someoneIsTouched) {
+        // record new shape
+        if (isRecording) {
+            int depression[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
+            for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
+                for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
+                    int x = i + minXTouched;
+                    int y = j + minYTouched;
+                    if (x < RELIEF_SIZE_X && y < RELIEF_SIZE_Y && isTouched[x][y]) {
+                        depression[i][j] = differenceHeight[x][y];
+                    } else {
+                        depression[i][j] = 0;
+                    }
+                }
+            }
+            
+            MoldedShape *newShape = new MoldedShape(getUID(), depression);
+            newShape->x = minXTouched;
+            newShape->y = minYTouched;
+            moldedShapes.push_back(newShape);
         }
     }
     
+    //*** MODE: Every Pin Input ***//
+
+    int midHeight = (LOW_THRESHOLD + HIGH_THRESHOLD) / 2;
     
+    for(int i = 0; i< RELIEF_SIZE_X; i++){
+        for(int j = 0; j< RELIEF_SIZE_Y; j++){
+            allPixels[RELIEF_PHYSICAL_SIZE_X* j+ xCoordinateShift(i)] = midHeight;
+        }
+    }
+
+    // draw molded shapes into allPixels array
+    for (vector<MoldedShape *>::iterator itr = moldedShapes.begin(); itr != moldedShapes.end(); itr++) {
+        for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
+            int x = i + (*itr)->x;
+            if (x >= RELIEF_SIZE_X) { break; }
+            for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
+                int y = j + (*itr)->y;
+                if (y >= RELIEF_SIZE_Y) { break; }
+                int shapeHeight = (*itr)->heightMap[i][j];
+                int proposedHeight = min(midHeight + shapeHeight, HIGH_THRESHOLD);
+                int index = RELIEF_PHYSICAL_SIZE_X * y + xCoordinateShift(x);
+                if (proposedHeight > (int) allPixels[index]) {
+                    allPixels[index] = proposedHeight;
+                }
+            }
+        }
+    }
+
+    // clear isRecording flag
+    isRecording = false;
+
+    // exit from here... no need for the rest
+    return;
+
     int rangeDef = 10; //range of deformation
     for(int i = 0; i< RELIEF_SIZE_X; i++){
         for(int j = 0; j< RELIEF_SIZE_Y; j++){
@@ -252,11 +318,19 @@ void MoldShapeObject::drawGuiScreen(int x, int y, int w, int h)
 
 void MoldShapeObject::setTableValuesForShape(ShapeIOManager *pIOManager)
 {
-    pIOManager->set_max_speed(200);
-    pIOManager->set_gain_p(1.5f);
-    pIOManager->set_gain_i(0.045f);
-    pIOManager->set_max_i(25);
-    pIOManager->set_deadzone(2);
+    if (false && isRecording) {
+        pIOManager->set_max_speed(0);
+        pIOManager->set_gain_p(1.5f);
+        pIOManager->set_gain_i(0.045f);
+        pIOManager->set_max_i(25);
+        pIOManager->set_deadzone(2);
+    } else {
+        pIOManager->set_max_speed(200);
+        pIOManager->set_gain_p(1.5f);
+        pIOManager->set_gain_i(0.045f);
+        pIOManager->set_max_i(25);
+        pIOManager->set_deadzone(2);
+    }
 };
 
 //----------------------------------------------------
