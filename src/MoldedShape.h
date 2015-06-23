@@ -22,7 +22,11 @@
 class MoldedShape {
 public:
     MoldedShape(int id, int _heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM]);
+    MoldedShape(int id, MoldedShape *moldedShape);
     int getId() {return id;};
+    Boolean containsLocation(int _x, int _y);
+    Boolean overlapsShape(MoldedShape *otherShape);
+
     int x = 0;
     int y = 0;
     int heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
