@@ -95,14 +95,15 @@ void MoldedShape::setDirection(float angleInDegrees) {
     direction = ofVec2f(1, 0).rotated(angleInDegrees);
 }
 
-Boolean MoldedShape::containsLocation(int _x, int _y) {
-    _x -= position.x;
-    _y -= position.y;
+Boolean MoldedShape::containsLocation(ofVec2f location) {
+    location -= position;
+    int x = location.x;
+    int y = location.y;
 
-    if (_x < 0 || _x >= MOLDED_SHAPE_DIM || _y < 0 || _y >= MOLDED_SHAPE_DIM) {
+    if (x < 0 || x >= MOLDED_SHAPE_DIM || y < 0 || y >= MOLDED_SHAPE_DIM) {
         return false;
     } else {
-        return heightMap[_x][_y] > 0;
+        return heightMap[x][y] > 0;
     }
 }
 
@@ -113,7 +114,7 @@ Boolean MoldedShape::overlapsShape(MoldedShape *otherShape) {
     int maxY = min(position.y + MOLDED_SHAPE_DIM, otherShape->position.y + MOLDED_SHAPE_DIM);
     for (int i = minX; i < maxX; i++) {
         for (int j = minY; j < maxY; j++) {
-            if (containsLocation(i, j) && otherShape->containsLocation(i, j)) {
+            if (containsLocation(ofVec2f(i, j)) && otherShape->containsLocation(ofVec2f(i, j))) {
                 return true;
             }
         }

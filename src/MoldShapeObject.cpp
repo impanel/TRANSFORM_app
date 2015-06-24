@@ -155,7 +155,7 @@ void MoldShapeObject::update(float dt)
                     if (i >= RELIEF_SIZE_X || generator != NULL) { break; }
                     for (int j = (*iter)->position.y; j < (*iter)->position.y + MOLDED_SHAPE_DIM; j++) {
                         if (j >= RELIEF_SIZE_Y) { break; }
-                        if (isTouched[i][j] && (*iter)->containsLocation(i, j)) {
+                        if (isTouched[i][j] && (*iter)->containsLocation(ofVec2f(i, j))) {
                             touchedShapeLocation.set(i, j);
                             generator = *iter;
                             break;
@@ -170,7 +170,7 @@ void MoldShapeObject::update(float dt)
             if (generator != NULL) {
                 for (int i = 0; i < RELIEF_SIZE_X; i++) {
                     for (int j = 0; j < RELIEF_SIZE_Y; j++) {
-                        if (isTouched[i][j] && !generator->containsLocation(i, j)) {
+                        if (isTouched[i][j] && !generator->containsLocation(ofVec2f(i, j))) {
                             ofVec2f duplicationSpawnPoint(i, j);
                             if (isNearRecentDuplicationPoint(duplicationSpawnPoint)) {
                                 break;
