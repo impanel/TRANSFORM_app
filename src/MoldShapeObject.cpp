@@ -423,6 +423,7 @@ MoldedShape *MoldShapeObject::duplicateMoldedShape(MoldedShape *shape) {
 void MoldShapeObject::updateMoldedShapes() {
     for (vector<MoldedShape *>::iterator iter = moldedShapes.begin(); iter != moldedShapes.end(); iter++) {
         (*iter)->update();
+        (*iter)->updateVelocityFromDepressions(differenceHeight);
     }
 }
 

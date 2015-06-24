@@ -95,6 +95,15 @@ void MoldedShape::setDirection(float angleInDegrees) {
     direction = ofVec2f(1, 0).rotated(angleInDegrees);
 }
 
+void MoldedShape::setVelocity(ofVec2f velocity) {
+    direction = velocity.normalize();
+    speed = velocity.length();
+}
+
+ofVec2f MoldedShape::getVelocity() {
+    return ofVec2f(direction * speed);
+}
+
 Boolean MoldedShape::containsLocation(ofVec2f location) {
     location -= position;
     int x = location.x;
@@ -147,4 +156,31 @@ Boolean MoldedShape::overlapsShape(MoldedShape *otherShape) {
     }
 
     return false;
+}
+
+Depression MoldedShape::netDepressionVector(int depressionMap[RELIEF_SIZE_X][RELIEF_SIZE_Y], int allowedDistance) {
+    vector<Depression> depressions;
+    for (int i = 0; i < RELIEF_SIZE_X; i++) {
+        for (int j = 0; j < RELIEF_SIZE_Y; j++) {
+            if (distanceFromLocation(ofVec2f(i, j)) <= allowedDistance) {
+                if (depressionMap[i][j] > 0) {
+                    depressions.push_back(Depression(ofVec2f(i, j), depressionMap[i][j]));
+                };
+            }
+        }
+    }
+    return Depression::sumOfDepressions(depressions);
+}
+
+void MoldedShape::updateVelocityFromDepressions(int depressionMap[RELIEF_SIZE_X][RELIEF_SIZE_Y]) {
+    float speedPerVolumePerFrame = 15.0 / 50.0 / ofGetFrameRate();
+    Depression netDepression = netDepressionVector(depressionMap);
+    if (netDepression.volume > 0) {
+        ofVec2f depressionCenter = netDepression.getPosition();
+        ofVec2f relativeCenter = depressionCenter - centerOfVolume;
+        if (relativeCenter.length() > 1) {
+            ofVec2f impulse = -relativeCenter.normalize() * netDepression.volume * speedPerVolumePerFrame;
+            setVelocity(getVelocity() + impulse);
+        }
+    }
 }

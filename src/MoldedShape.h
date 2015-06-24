@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include "ofMain.h"
+#include "Constants.h"
 #include "Depression.h"
 
 
@@ -27,11 +28,15 @@ public:
     void update();
     int getId();
     void setDirection(float angleInDegrees);
+    void setVelocity(ofVec2f velocity);
+    ofVec2f getVelocity();
     Boolean containsLocation(ofVec2f location);
     ofVec2f nearestEdgeToLocation(ofVec2f location);
     ofVec2f vectorFromNearestEdgeToLocation(ofVec2f location);
     float distanceFromLocation(ofVec2f location);
     Boolean overlapsShape(MoldedShape *otherShape);
+    Depression netDepressionVector(int depressionMap[RELIEF_SIZE_X][RELIEF_SIZE_Y], int allowedDistance=2);
+    void updateVelocityFromDepressions(int depressionMap[RELIEF_SIZE_X][RELIEF_SIZE_Y]);
 
     ofVec2f position;
     int heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
