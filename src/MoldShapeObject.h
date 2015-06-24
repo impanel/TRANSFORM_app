@@ -35,9 +35,13 @@ public:
     //void setImageWarper(ImageWarper * pImageWarper) {mImageWarper = pImageWarper;};
     void setTableValuesForShape(ShapeIOManager *pIOManager);
     unsigned char* getPixels();
-    
+
     int xCoordinateShift(int num);
-    
+
+    MoldedShape *getMoldedShapeById(int id);
+    MoldedShape *getMoldedShapeByIndex(int id);
+    void duplicateMoldedShape(MoldedShape *shape);
+
 
     Boolean isRecording = false;
     
@@ -62,6 +66,7 @@ private:
     vector<MoldedShape *> moldedShapes;
     int nextObjectId = 0;
     int getUID() {return nextObjectId++;}
+    void updateMoldedShapes();
 };
 
 

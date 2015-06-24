@@ -159,6 +159,8 @@ void MoldShapeObject::update(float dt)
         }
     }
 
+    updateMoldedShapes();
+
     // draw molded shapes into allPixels array
     for (vector<MoldedShape *>::iterator itr = moldedShapes.begin(); itr != moldedShapes.end(); itr++) {
         for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
@@ -352,4 +354,34 @@ int MoldShapeObject::xCoordinateShift (int num){
         val = PINBLOCK_2_X_OFFSET +num  -32;
     }
     return val;
+}
+
+MoldedShape *MoldShapeObject::getMoldedShapeById(int id) {
+    for (vector<MoldedShape *>::iterator iter = moldedShapes.begin(); iter != moldedShapes.end(); iter++) {
+        if ((*iter)->getId() == id) {
+            return (*iter);
+        }
+    }
+    return NULL;
+}
+
+MoldedShape *MoldShapeObject::getMoldedShapeByIndex(int id) {
+    if (id < moldedShapes.size()) {
+        return moldedShapes.at(id);
+    } else {
+        return NULL;
+    }
+}
+
+void MoldShapeObject::duplicateMoldedShape(MoldedShape *shape) {
+    MoldedShape *newShape = new MoldedShape(getUID(), shape);
+    newShape->speed = 10 + (rand() % 15);
+    newShape->setDirection(rand() % 360);
+    moldedShapes.push_back(newShape);
+}
+
+void MoldShapeObject::updateMoldedShapes() {
+    for (vector<MoldedShape *>::iterator iter = moldedShapes.begin(); iter != moldedShapes.end(); iter++) {
+        (*iter)->update();
+    }
 }

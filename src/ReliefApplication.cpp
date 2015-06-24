@@ -798,6 +798,11 @@ void ReliefApplication::keyPressed(int key){
                 mMoldShapeObject->isRecording = true;
             }
             break;
+        case 'q':
+            if (mMoldShapeObject == mCurrentShapeObjects[0]) {
+                mMoldShapeObject->duplicateMoldedShape(mMoldShapeObject->getMoldedShapeByIndex(0));
+            }
+            break;
 		case 'r':
         case 'R':
 			if (movieExporter.isRecording()) {

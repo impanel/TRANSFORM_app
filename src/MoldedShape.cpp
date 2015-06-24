@@ -17,9 +17,15 @@ MoldedShape::MoldedShape(int id, int _heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_D
     }
 
     calculateCenterOfVolume();
+    motionAccumulator.set(0, 0);
+    direction.set(1, 0);
 }
 
 MoldedShape::MoldedShape(int id, MoldedShape *moldedShape) : id(id) {
+    if (moldedShape == NULL) {
+        throw "must pass live pointer to MoldedShape copy constructor";
+    }
+
     for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
         for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
             heightMap[i][j] = moldedShape->heightMap[i][j];
@@ -27,6 +33,42 @@ MoldedShape::MoldedShape(int id, MoldedShape *moldedShape) : id(id) {
     }
 
     calculateCenterOfVolume();
+
+    x = moldedShape->x;
+    y = moldedShape->y;
+    speed = moldedShape->speed;
+    direction = moldedShape->direction;
+    motionAccumulator.set(moldedShape->motionAccumulator);
+    decelerationAccumulator = moldedShape->decelerationAccumulator;
+}
+
+void MoldedShape::update() {
+    if (speed > 0) {
+        decelerationAccumulator++;
+        motionAccumulator += direction.getNormalized() * speed;
+
+        // when accumulators overflow in positive or negative direction, bump the corresponding value
+        while (motionAccumulator.x > MOTION_ACCUMULATION_THRESHOLD) {
+            x++;
+            motionAccumulator.x-= MOTION_ACCUMULATION_THRESHOLD;
+        }
+        while (motionAccumulator.x < -MOTION_ACCUMULATION_THRESHOLD) {
+            x--;
+            motionAccumulator.x+= MOTION_ACCUMULATION_THRESHOLD;
+        }
+        while (motionAccumulator.y > MOTION_ACCUMULATION_THRESHOLD) {
+            y++;
+            motionAccumulator.y-= MOTION_ACCUMULATION_THRESHOLD;
+        }
+        while (motionAccumulator.y < -MOTION_ACCUMULATION_THRESHOLD) {
+            y--;
+            motionAccumulator.y+= MOTION_ACCUMULATION_THRESHOLD;
+        }
+        while (decelerationAccumulator > DECELERATION_ACCUMULATION_THRESHOLD) {
+            speed--;
+            decelerationAccumulator -= DECELERATION_ACCUMULATION_THRESHOLD;
+        }
+    }
 }
 
 // calculate the volumetric center (analogue of center of mass) by weighting each location by
@@ -43,6 +85,14 @@ void MoldedShape::calculateCenterOfVolume() {
     }
 
     centerOfVolume = volumeTorque / totalVolume;
+}
+
+int MoldedShape::getId() {
+    return id;
+}
+
+void MoldedShape::setDirection(float angleInDegrees) {
+    direction = ofVec2f(1, 0).rotated(angleInDegrees);
 }
 
 Boolean MoldedShape::containsLocation(int _x, int _y) {

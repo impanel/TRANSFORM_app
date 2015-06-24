@@ -18,12 +18,16 @@
 
 
 #define MOLDED_SHAPE_DIM 16
+#define MOTION_ACCUMULATION_THRESHOLD 50 // lower this to increase speed
+#define DECELERATION_ACCUMULATION_THRESHOLD 10 // lower this to increase friction
 
 class MoldedShape {
 public:
     MoldedShape(int id, int _heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM]);
     MoldedShape(int id, MoldedShape *moldedShape);
-    int getId() {return id;};
+    void update();
+    int getId();
+    void setDirection(float angleInDegrees);
     Boolean containsLocation(int _x, int _y);
     Boolean overlapsShape(MoldedShape *otherShape);
 
@@ -33,11 +37,13 @@ public:
     int totalVolume = 0;
     ofVec2f centerOfVolume;
     int speed = 0;
-    int direction = 0; // direction of movement in degrees
+    ofVec2f direction; // direction of movement as a unit vector
 
 private:
     void calculateCenterOfVolume();
     int id;
+    ofVec2f motionAccumulator;
+    int decelerationAccumulator = 0;
 };
 
 
