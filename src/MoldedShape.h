@@ -42,7 +42,7 @@ public:
     int heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
     int totalVolume = 0;
     ofVec2f centerOfVolume;
-    int speed = 0;
+    float speed = 0;
     ofVec2f direction; // direction of movement as a unit vector
 
 private:
