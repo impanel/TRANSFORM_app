@@ -148,23 +148,27 @@ void MoldShapeObject::update(float dt)
             moldedShapes.push_back(newShape);
 
         } else if (moldedShapes.size() > 0) {
-            // is the generator mold touched?
-            MoldedShape *generator = moldedShapes.at(0);
-            bool generatorIsTouched = false;
+            // is an existing mold touched?
+            MoldedShape *generator = NULL;
             ofVec2f touchedShapeLocation;
-            for (int i = generator->x; i < generator->x + MOLDED_SHAPE_DIM; i++) {
-                if (i >= RELIEF_SIZE_X || generatorIsTouched) { break; }
-                for (int j = generator->y; j < generator->y + MOLDED_SHAPE_DIM; j++) {
-                    if (j >= RELIEF_SIZE_Y) { break; }
-                    if (isTouched[i][j] && generator->containsLocation(i, j)) {
-                        generatorIsTouched = true;
-                        touchedShapeLocation.set(i, j);
-                        break;
+            for (vector<MoldedShape *>::iterator iter = moldedShapes.begin(); iter != moldedShapes.end(); iter++) {
+                for (int i = (*iter)->x; i < (*iter)->x + MOLDED_SHAPE_DIM; i++) {
+                    if (i >= RELIEF_SIZE_X || generator != NULL) { break; }
+                    for (int j = (*iter)->y; j < (*iter)->y + MOLDED_SHAPE_DIM; j++) {
+                        if (j >= RELIEF_SIZE_Y) { break; }
+                        if (isTouched[i][j] && (*iter)->containsLocation(i, j)) {
+                            touchedShapeLocation.set(i, j);
+                            generator = *iter;
+                            break;
+                        }
                     }
+                }
+                if (generator != NULL) {
+                    break;
                 }
             }
             // if so, generate copies that move towards any other touched locations
-            if (generatorIsTouched) {
+            if (generator != NULL) {
                 for (int i = 0; i < RELIEF_SIZE_X; i++) {
                     for (int j = 0; j < RELIEF_SIZE_Y; j++) {
                         if (isTouched[i][j] && !generator->containsLocation(i, j)) {
