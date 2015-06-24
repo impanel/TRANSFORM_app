@@ -107,6 +107,28 @@ Boolean MoldedShape::containsLocation(ofVec2f location) {
     }
 }
 
+ofVec2f MoldedShape::vectorFromNearestEdgeToLocation(ofVec2f location) {
+    float nearestDistance = -1;
+    ofVec2f vec;
+    for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
+        for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
+            if (heightMap[i][j] > 0) {
+                ofVec2f candidateVec = position + ofVec2f(i, j);
+                float candidateDistance = candidateVec.distance(location);
+                if (candidateDistance < nearestDistance || nearestDistance < 0) {
+                    nearestDistance = candidateDistance;
+                    vec = candidateVec;
+                }
+            }
+        }
+    }
+    return vec;
+}
+
+float MoldedShape::distanceFromLocation(ofVec2f location) {
+    return vectorFromNearestEdgeToLocation(location).length();
+}
+
 Boolean MoldedShape::overlapsShape(MoldedShape *otherShape) {
     int minX = max(position.x, otherShape->position.x);
     int minY = max(position.y, otherShape->position.y);

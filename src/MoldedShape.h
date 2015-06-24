@@ -29,6 +29,8 @@ public:
     int getId();
     void setDirection(float angleInDegrees);
     Boolean containsLocation(ofVec2f location);
+    ofVec2f vectorFromNearestEdgeToLocation(ofVec2f location);
+    float distanceFromLocation(ofVec2f location);
     Boolean overlapsShape(MoldedShape *otherShape);
 
     ofVec2f position;
