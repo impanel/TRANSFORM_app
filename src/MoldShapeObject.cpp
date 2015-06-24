@@ -143,8 +143,7 @@ void MoldShapeObject::update(float dt)
             }
             
             MoldedShape *newShape = new MoldedShape(getUID(), depression);
-            newShape->x = minXTouched;
-            newShape->y = minYTouched;
+            newShape->position.set(minXTouched, minYTouched);
             moldedShapes.push_back(newShape);
 
         } else if (moldedShapes.size() > 0) {
@@ -152,9 +151,9 @@ void MoldShapeObject::update(float dt)
             MoldedShape *generator = NULL;
             ofVec2f touchedShapeLocation;
             for (vector<MoldedShape *>::iterator iter = moldedShapes.begin(); iter != moldedShapes.end(); iter++) {
-                for (int i = (*iter)->x; i < (*iter)->x + MOLDED_SHAPE_DIM; i++) {
+                for (int i = (*iter)->position.x; i < (*iter)->position.x + MOLDED_SHAPE_DIM; i++) {
                     if (i >= RELIEF_SIZE_X || generator != NULL) { break; }
-                    for (int j = (*iter)->y; j < (*iter)->y + MOLDED_SHAPE_DIM; j++) {
+                    for (int j = (*iter)->position.y; j < (*iter)->position.y + MOLDED_SHAPE_DIM; j++) {
                         if (j >= RELIEF_SIZE_Y) { break; }
                         if (isTouched[i][j] && (*iter)->containsLocation(i, j)) {
                             touchedShapeLocation.set(i, j);
@@ -204,10 +203,10 @@ void MoldShapeObject::update(float dt)
     // draw molded shapes into allPixels array
     for (vector<MoldedShape *>::iterator itr = moldedShapes.begin(); itr != moldedShapes.end(); itr++) {
         for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
-            int x = i + (*itr)->x;
+            int x = i + (*itr)->position.x;
             if (x >= RELIEF_SIZE_X) { break; }
             for (int j = 0; j < MOLDED_SHAPE_DIM; j++) {
-                int y = j + (*itr)->y;
+                int y = j + (*itr)->position.y;
                 if (y >= RELIEF_SIZE_Y) { break; }
                 int shapeHeight = (*itr)->heightMap[i][j];
                 int proposedHeight = min(midHeight + shapeHeight, HIGH_THRESHOLD);

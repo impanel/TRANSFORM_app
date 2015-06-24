@@ -17,6 +17,7 @@ MoldedShape::MoldedShape(int id, int _heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_D
     }
 
     calculateCenterOfVolume();
+    position.set(0, 0);
     motionAccumulator.set(0, 0);
     direction.set(1, 0);
 }
@@ -34,8 +35,7 @@ MoldedShape::MoldedShape(int id, MoldedShape *moldedShape) : id(id) {
 
     calculateCenterOfVolume();
 
-    x = moldedShape->x;
-    y = moldedShape->y;
+    position = moldedShape->position;
     speed = moldedShape->speed;
     direction = moldedShape->direction;
     motionAccumulator.set(moldedShape->motionAccumulator);
@@ -49,19 +49,19 @@ void MoldedShape::update() {
 
         // when accumulators overflow in positive or negative direction, bump the corresponding value
         while (motionAccumulator.x > MOTION_ACCUMULATION_THRESHOLD) {
-            x++;
+            position.x++;
             motionAccumulator.x-= MOTION_ACCUMULATION_THRESHOLD;
         }
         while (motionAccumulator.x < -MOTION_ACCUMULATION_THRESHOLD) {
-            x--;
+            position.x--;
             motionAccumulator.x+= MOTION_ACCUMULATION_THRESHOLD;
         }
         while (motionAccumulator.y > MOTION_ACCUMULATION_THRESHOLD) {
-            y++;
+            position.y++;
             motionAccumulator.y-= MOTION_ACCUMULATION_THRESHOLD;
         }
         while (motionAccumulator.y < -MOTION_ACCUMULATION_THRESHOLD) {
-            y--;
+            position.y--;
             motionAccumulator.y+= MOTION_ACCUMULATION_THRESHOLD;
         }
         while (decelerationAccumulator > DECELERATION_ACCUMULATION_THRESHOLD) {
@@ -96,17 +96,17 @@ void MoldedShape::setDirection(float angleInDegrees) {
 }
 
 Boolean MoldedShape::containsLocation(int _x, int _y) {
-    _x -= x;
-    _y -= y;
+    _x -= position.x;
+    _y -= position.y;
 
     return (_x < MOLDED_SHAPE_DIM && _y < MOLDED_SHAPE_DIM && heightMap[_x][_y]);
 }
 
 Boolean MoldedShape::overlapsShape(MoldedShape *otherShape) {
-    int minX = max(x, otherShape->x);
-    int minY = max(y, otherShape->y);
-    int maxX = min(x + MOLDED_SHAPE_DIM, otherShape->x + MOLDED_SHAPE_DIM);
-    int maxY = min(y + MOLDED_SHAPE_DIM, otherShape->y + MOLDED_SHAPE_DIM);
+    int minX = max(position.x, otherShape->position.x);
+    int minY = max(position.y, otherShape->position.y);
+    int maxX = min(position.x + MOLDED_SHAPE_DIM, otherShape->position.x + MOLDED_SHAPE_DIM);
+    int maxY = min(position.y + MOLDED_SHAPE_DIM, otherShape->position.y + MOLDED_SHAPE_DIM);
     for (int i = minX; i < maxX; i++) {
         for (int j = minY; j < maxY; j++) {
             if (containsLocation(i, j) && otherShape->containsLocation(i, j)) {

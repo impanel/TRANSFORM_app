@@ -31,8 +31,7 @@ public:
     Boolean containsLocation(int _x, int _y);
     Boolean overlapsShape(MoldedShape *otherShape);
 
-    int x = 0;
-    int y = 0;
+    ofVec2f position;
     int heightMap[MOLDED_SHAPE_DIM][MOLDED_SHAPE_DIM];
     int totalVolume = 0;
     ofVec2f centerOfVolume;
