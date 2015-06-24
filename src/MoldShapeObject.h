@@ -40,7 +40,8 @@ public:
 
     MoldedShape *getMoldedShapeById(int id);
     MoldedShape *getMoldedShapeByIndex(int id);
-    void duplicateMoldedShape(MoldedShape *shape);
+    MoldedShape *duplicateMoldedShape(MoldedShape *shape);
+    vector<pair<ofVec2f, int> > recentDuplicationPoints;
 
 
     Boolean isRecording = false;
@@ -67,6 +68,9 @@ private:
     int nextObjectId = 0;
     int getUID() {return nextObjectId++;}
     void updateMoldedShapes();
+    bool isNearRecentDuplicationPoint(ofVec2f point);
+    void registerRecentDuplicationPoint(ofVec2f duplicationPoint);
+    void updateRecentDuplicationPointsRegistry();
 };
 
 

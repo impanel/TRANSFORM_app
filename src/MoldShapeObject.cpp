@@ -146,6 +146,41 @@ void MoldShapeObject::update(float dt)
             newShape->x = minXTouched;
             newShape->y = minYTouched;
             moldedShapes.push_back(newShape);
+
+        } else if (moldedShapes.size() > 0) {
+            // is the generator mold touched?
+            MoldedShape &generator = *(moldedShapes.at(0));
+            bool generatorIsTouched = false;
+            ofVec2f touchedShapeLocation;
+            for (int i = generator.x; i < generator.x + MOLDED_SHAPE_DIM; i++) {
+                if (i >= RELIEF_SIZE_X || generatorIsTouched) { break; }
+                for (int j = generator.y; j < generator.y + MOLDED_SHAPE_DIM; j++) {
+                    if (j >= RELIEF_SIZE_Y) { break; }
+                    if (isTouched[i][j] && generator.containsLocation(i, j)) {
+                        generatorIsTouched = true;
+                        touchedShapeLocation.set(i, j);
+                        break;
+                    }
+                }
+            }
+            // if so, generate copies that move towards any other touched locations
+            if (generatorIsTouched) {
+                for (int i = 0; i < RELIEF_SIZE_X; i++) {
+                    for (int j = 0; j < RELIEF_SIZE_Y; j++) {
+                        if (isTouched[i][j] && !generator.containsLocation(i, j)) {
+                            ofVec2f duplicationSpawnPoint(i, j);
+                            if (isNearRecentDuplicationPoint(duplicationSpawnPoint)) {
+                                break;
+                            }
+                            MoldedShape *duplicate = duplicateMoldedShape(&generator);
+                            ofVec2f locationDifference = duplicationSpawnPoint - touchedShapeLocation;
+                            duplicate->direction = locationDifference.normalized();
+                            duplicate->speed = locationDifference.length() / 3 + 10;
+                            registerRecentDuplicationPoint(duplicationSpawnPoint);
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -160,6 +195,7 @@ void MoldShapeObject::update(float dt)
     }
 
     updateMoldedShapes();
+    updateRecentDuplicationPointsRegistry();
 
     // draw molded shapes into allPixels array
     for (vector<MoldedShape *>::iterator itr = moldedShapes.begin(); itr != moldedShapes.end(); itr++) {
@@ -373,15 +409,43 @@ MoldedShape *MoldShapeObject::getMoldedShapeByIndex(int id) {
     }
 }
 
-void MoldShapeObject::duplicateMoldedShape(MoldedShape *shape) {
+MoldedShape *MoldShapeObject::duplicateMoldedShape(MoldedShape *shape) {
     MoldedShape *newShape = new MoldedShape(getUID(), shape);
     newShape->speed = 10 + (rand() % 15);
     newShape->setDirection(rand() % 360);
     moldedShapes.push_back(newShape);
+    return newShape;
 }
 
 void MoldShapeObject::updateMoldedShapes() {
     for (vector<MoldedShape *>::iterator iter = moldedShapes.begin(); iter != moldedShapes.end(); iter++) {
         (*iter)->update();
+    }
+}
+
+bool MoldShapeObject::isNearRecentDuplicationPoint(ofVec2f point) {
+    int allowedDistance = 5;
+    for (vector<pair<ofVec2f, int> >::iterator iter = recentDuplicationPoints.begin(); iter != recentDuplicationPoints.end(); iter++) {
+        if (point.distanceSquared((*iter).first) < allowedDistance * allowedDistance) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void MoldShapeObject::registerRecentDuplicationPoint(ofVec2f duplicationPoint) {
+    recentDuplicationPoints.push_back(pair<ofVec2f, int>(duplicationPoint, 0));
+}
+
+// increment all points in the registry, deleting those that have grown old
+void MoldShapeObject::updateRecentDuplicationPointsRegistry() {
+    int removalAge = 100;
+    for (vector<pair<ofVec2f, int> >::iterator iter = recentDuplicationPoints.begin(); iter != recentDuplicationPoints.end(); /* custom incrementing */) {
+        if ((*iter).second < removalAge) {
+            (*iter).second++;
+            iter++;
+        } else {
+            iter = recentDuplicationPoints.erase(iter);
+        }
     }
 }
