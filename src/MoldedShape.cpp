@@ -99,7 +99,11 @@ Boolean MoldedShape::containsLocation(int _x, int _y) {
     _x -= position.x;
     _y -= position.y;
 
-    return (_x < MOLDED_SHAPE_DIM && _y < MOLDED_SHAPE_DIM && heightMap[_x][_y]);
+    if (_x < 0 || _x >= MOLDED_SHAPE_DIM || _y < 0 || _y >= MOLDED_SHAPE_DIM) {
+        return false;
+    } else {
+        return heightMap[_x][_y] > 0;
+    }
 }
 
 Boolean MoldedShape::overlapsShape(MoldedShape *otherShape) {
