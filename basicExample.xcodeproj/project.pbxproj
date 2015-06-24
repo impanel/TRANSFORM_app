@@ -18,6 +18,7 @@
 		63020f16c7e8ded980111241 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c6151136d101f857dae12722 /* ofxCvImage.cpp */; };
 		6572FC8B1B38FBDF001BBF38 /* MoldShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6572FC891B38FBDF001BBF38 /* MoldShapeObject.cpp */; };
 		6572FC991B39FCC0001BBF38 /* MoldedShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6572FC981B39FCC0001BBF38 /* MoldedShape.cpp */; };
+		6572FC9C1B3B0A36001BBF38 /* Depression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6572FC9B1B3B0A36001BBF38 /* Depression.cpp */; };
 		686b0df6249b52e1a85b39ec /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ed9ffc7d08da194c2ce7d09 /* ofxKinect.cpp */; };
 		8A193EAA18DBB20F00516528 /* baseVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A193EA818DBB20F00516528 /* baseVideoPlayer.cpp */; };
 		8A193ED318DBCE8F00516528 /* ImageWarper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A193ECC18DBCE8F00516528 /* ImageWarper.cpp */; };
@@ -252,6 +253,8 @@
 		6572FC8A1B38FBDF001BBF38 /* MoldShapeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoldShapeObject.h; sourceTree = "<group>"; };
 		6572FC981B39FCC0001BBF38 /* MoldedShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoldedShape.cpp; sourceTree = "<group>"; };
 		6572FC9A1B39FCCD001BBF38 /* MoldedShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoldedShape.h; sourceTree = "<group>"; };
+		6572FC9B1B3B0A36001BBF38 /* Depression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Depression.cpp; sourceTree = "<group>"; };
+		6572FC9D1B3B0A41001BBF38 /* Depression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Depression.h; sourceTree = "<group>"; };
 		665780a3005496e3a4a0d9ef /* compat.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = compat.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/compat.hpp; sourceTree = SOURCE_ROOT; };
 		67af0e794fa186dd25454cc9 /* calib3d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = calib3d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d/calib3d.hpp; sourceTree = SOURCE_ROOT; };
 		6b907cfbb1b0fede76c41aa0 /* heap.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = heap.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/heap.h; sourceTree = SOURCE_ROOT; };
@@ -947,6 +950,8 @@
 				6572FC8A1B38FBDF001BBF38 /* MoldShapeObject.h */,
 				6572FC981B39FCC0001BBF38 /* MoldedShape.cpp */,
 				6572FC9A1B39FCCD001BBF38 /* MoldedShape.h */,
+				6572FC9B1B3B0A36001BBF38 /* Depression.cpp */,
+				6572FC9D1B3B0A41001BBF38 /* Depression.h */,
 			);
 			name = mold;
 			sourceTree = "<group>";
@@ -2288,6 +2293,7 @@
 				8A1940D318DD336E00516528 /* ofxTLColorTrack.cpp in Sources */,
 				8ABAA63E18EFF18000009A66 /* ofxUIValuePlotter.cpp in Sources */,
 				8A1940CF18DD336E00516528 /* ofxTLAudioTrack.cpp in Sources */,
+				6572FC9C1B3B0A36001BBF38 /* Depression.cpp in Sources */,
 				D9F0A1CB18DCE608007E7E35 /* ofxEasingBack.cpp in Sources */,
 				8ABAA63818EFF18000009A66 /* ofxUISuperCanvas.cpp in Sources */,
 				8A1940CC18DD336E00516528 /* ofxHotKeys_impl_win.cpp in Sources */,

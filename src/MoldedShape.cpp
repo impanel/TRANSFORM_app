@@ -107,7 +107,7 @@ Boolean MoldedShape::containsLocation(ofVec2f location) {
     }
 }
 
-ofVec2f MoldedShape::vectorFromNearestEdgeToLocation(ofVec2f location) {
+ofVec2f MoldedShape::nearestEdgeToLocation(ofVec2f location) {
     float nearestDistance = -1;
     ofVec2f vec;
     for (int i = 0; i < MOLDED_SHAPE_DIM; i++) {
@@ -123,6 +123,10 @@ ofVec2f MoldedShape::vectorFromNearestEdgeToLocation(ofVec2f location) {
         }
     }
     return vec;
+}
+
+ofVec2f MoldedShape::vectorFromNearestEdgeToLocation(ofVec2f location) {
+    location - nearestEdgeToLocation(location);
 }
 
 float MoldedShape::distanceFromLocation(ofVec2f location) {

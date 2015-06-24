@@ -12,11 +12,13 @@
 
 #include <iostream>
 #include "ofMain.h"
+#include "Depression.h"
 
 
 #define MOLDED_SHAPE_DIM 16
 #define MOTION_ACCUMULATION_THRESHOLD 50 // lower this to increase speed
 #define DECELERATION_ACCUMULATION_THRESHOLD 10 // lower this to increase friction
+
 
 class MoldedShape {
 public:
@@ -26,6 +28,7 @@ public:
     int getId();
     void setDirection(float angleInDegrees);
     Boolean containsLocation(ofVec2f location);
+    ofVec2f nearestEdgeToLocation(ofVec2f location);
     ofVec2f vectorFromNearestEdgeToLocation(ofVec2f location);
     float distanceFromLocation(ofVec2f location);
     Boolean overlapsShape(MoldedShape *otherShape);
