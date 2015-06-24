@@ -11,10 +11,7 @@
 #define __basicExample__MoldedShape__
 
 #include <iostream>
-#include "ShapeObject.h"
-#include "Constants.h"
-#include "ShapeIOManager.h"
-#include "ofxOpenCv.h"
+#include "ofMain.h"
 
 
 #define MOLDED_SHAPE_DIM 16
