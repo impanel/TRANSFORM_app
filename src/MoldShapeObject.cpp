@@ -149,14 +149,14 @@ void MoldShapeObject::update(float dt)
 
         } else if (moldedShapes.size() > 0) {
             // is the generator mold touched?
-            MoldedShape &generator = *(moldedShapes.at(0));
+            MoldedShape *generator = moldedShapes.at(0);
             bool generatorIsTouched = false;
             ofVec2f touchedShapeLocation;
-            for (int i = generator.x; i < generator.x + MOLDED_SHAPE_DIM; i++) {
+            for (int i = generator->x; i < generator->x + MOLDED_SHAPE_DIM; i++) {
                 if (i >= RELIEF_SIZE_X || generatorIsTouched) { break; }
-                for (int j = generator.y; j < generator.y + MOLDED_SHAPE_DIM; j++) {
+                for (int j = generator->y; j < generator->y + MOLDED_SHAPE_DIM; j++) {
                     if (j >= RELIEF_SIZE_Y) { break; }
-                    if (isTouched[i][j] && generator.containsLocation(i, j)) {
+                    if (isTouched[i][j] && generator->containsLocation(i, j)) {
                         generatorIsTouched = true;
                         touchedShapeLocation.set(i, j);
                         break;
@@ -167,12 +167,12 @@ void MoldShapeObject::update(float dt)
             if (generatorIsTouched) {
                 for (int i = 0; i < RELIEF_SIZE_X; i++) {
                     for (int j = 0; j < RELIEF_SIZE_Y; j++) {
-                        if (isTouched[i][j] && !generator.containsLocation(i, j)) {
+                        if (isTouched[i][j] && !generator->containsLocation(i, j)) {
                             ofVec2f duplicationSpawnPoint(i, j);
                             if (isNearRecentDuplicationPoint(duplicationSpawnPoint)) {
                                 break;
                             }
-                            MoldedShape *duplicate = duplicateMoldedShape(&generator);
+                            MoldedShape *duplicate = duplicateMoldedShape(generator);
                             ofVec2f locationDifference = duplicationSpawnPoint - touchedShapeLocation;
                             duplicate->direction = locationDifference.normalized();
                             duplicate->speed = locationDifference.length() / 3 + 10;
